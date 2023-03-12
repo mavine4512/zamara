@@ -1,9 +1,14 @@
-import React from "react";
-import { View, Text } from "react-native";
-function Logout() {
+import React, { useContext } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import { AuthContext } from "../../components/context";
+function Logout(navigation) {
+  const { logout } = useContext(AuthContext);
+
   return (
     <View>
-      <Text>Logout screen</Text>
+      <TouchableOpacity onPress={() => logout()}>
+        <Text>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 }

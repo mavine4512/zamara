@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -10,18 +10,17 @@ import {
   Alert,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
-import { CommonActions } from "@react-navigation/routers";
-import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../../components/context";
 import styles from "./styles";
 import Icon from "../../components/icon";
 import LoginImg from "../../assets/images/login.png";
 import { white } from "../../utilities/color";
 import { moderateScale } from "react-native-size-matters";
 
-function Login() {
+function Login({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigation = useNavigation();
+  const { login } = useContext(AuthContext);
 
   const LoginAction = () => {
     fetch("https://dummyjson.com/auth/login", {
@@ -37,14 +36,20 @@ function Login() {
       .then((res) => {
         console.log("res", res);
         // saveUser(res);
-        navigation.navigate("Home");
-        // _redirect("Home");
+        navigation.push("Home");
         setPassword(""), setUsername("");
       });
     (error) => {
       console.log("error", error);
     };
   };
+
+  //  async saveUser(user) {
+  //   try {
+  //     this.setState({ token: user.access_token, loading: false });
+  //     storeLocalStorage("user", user);
+  //   } catch (e) {}
+  // }
 
   const handleLogin = () => {
     // Check if email is valid
@@ -62,14 +67,6 @@ function Login() {
       return;
     }
     LoginAction();
-  };
-  const _redirect = (page) => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: page }],
-      })
-    );
   };
 
   return (

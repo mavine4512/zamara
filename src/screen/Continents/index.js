@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 function Continents() {
   return (
     <View>
-      <Text>Home screen</Text>
+      <Text>Continents screen</Text>
     </View>
   );
 }
