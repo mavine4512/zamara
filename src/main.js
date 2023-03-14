@@ -16,17 +16,65 @@ import { bindActionCreators } from "redux";
 import { createStore } from "redux";
 
 const store = createStore(reducer);
-const Drawer = createDrawerNavigator();
+
 const AuthStack = createStackNavigator();
+function AuthStackScreen() {
+  return (
+    <AuthStack.Navigator>
+      <AuthStack.Screen
+        name="Login"
+        options={{ headerShown: false }}
+        component={Login}
+      />
+    </AuthStack.Navigator>
+  );
+}
+
+const Drawer = createDrawerNavigator();
+function DrawerScreen() {
+  return (
+    <Drawer.Navigator
+      initialRouteName="Home"
+      drawerPosition={"left"}
+      statusBarAnimation={"slide"}
+    >
+      <Drawer.Screen name="ZAMARA APP" component={Home} />
+      <Drawer.Screen name="Staff" component={Staff} />
+      <Drawer.Screen name="Continents" component={Continents} />
+      <Drawer.Screen name="Logout" component={Logout} />
+    </Drawer.Navigator>
+  );
+}
+
+const RootStack = createStackNavigator();
+
+const RootStackScreen = ({ userToken }) => (
+  <RootStack.Navigator>
+    {userToken ? (
+      <RootStack.Screen
+        name="DrawerScreen"
+        component={DrawerScreen}
+        options={{ headerShown: false }}
+      />
+    ) : (
+      <RootStack.Screen
+        name="AuthStackScreen"
+        component={AuthStackScreen}
+        options={{ headerShown: false }}
+      />
+    )}
+  </RootStack.Navigator>
+);
+
 function Main(props) {
   const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setUserToken] = useState("dfgas");
+  const [userToken, setUserToken] = useState("hsvkjs");
 
   const authContext = useMemo(() => {
     return {
       login: () => {
         setIsLoading(false);
-        setUserToken("sfsdd");
+        setUserToken("hsvkjs");
       },
       logout: () => {
         setIsLoading(false);
@@ -45,31 +93,11 @@ function Main(props) {
   if (isLoading) {
     return <Slash />;
   }
-  console.log("prop", props);
 
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {userToken ? (
-          <Drawer.Navigator
-            initialRouteName="Home"
-            drawerPosition={"left"}
-            statusBarAnimation={"slide"}
-          >
-            <Drawer.Screen name="ZAMARA APP" component={Home} />
-            <Drawer.Screen name="Staff" component={Staff} />
-            <Drawer.Screen name="Continents" component={Continents} />
-            <Drawer.Screen name="Logout" component={Logout} />
-          </Drawer.Navigator>
-        ) : (
-          <AuthStack.Navigator>
-            <AuthStack.Screen
-              name="Login"
-              options={{ headerMode: "none", headerShown: false }}
-              component={Login}
-            />
-          </AuthStack.Navigator>
-        )}
+        <RootStackScreen userToken={userToken} />
       </NavigationContainer>
     </AuthContext.Provider>
   );

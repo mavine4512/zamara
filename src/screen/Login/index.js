@@ -30,7 +30,7 @@ function Login() {
 
   const navigation = useNavigation();
 
-  const LoginAction = (props) => {
+  const LoginAction = () => {
     fetch("https://dummyjson.com/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -43,9 +43,10 @@ function Login() {
       .then((res) => res.json())
       .then((res) => {
         console.log("res", res);
-        navigation.navigate("Home");
-
+        navigation.navigate("DrawerScreen", { screen: "Home" });
+        // navigation.push("Home");
         saveUser(res);
+        addUser(res);
         setPassword(""), setUsername("");
       });
     (error) => {
