@@ -16,11 +16,19 @@ import Icon from "../../components/icon";
 import LoginImg from "../../assets/images/login.png";
 import { white } from "../../utilities/color";
 import { moderateScale } from "react-native-size-matters";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { addUser } from "../../components/redux/actions";
+import { storeLocalStorage } from "../../components/dao/dao";
+import { useNavigation } from "@react-navigation/native";
+import { CommonActions } from "@react-navigation/routers";
 
-function Login({ navigation }) {
+function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useContext(AuthContext);
+
+  const navigation = useNavigation();
 
   const LoginAction = () => {
     fetch("https://dummyjson.com/auth/login", {
@@ -35,8 +43,10 @@ function Login({ navigation }) {
       .then((res) => res.json())
       .then((res) => {
         console.log("res", res);
-        // saveUser(res);
-        navigation.push("Home");
+        navigation.navigate("DrawerScreen", { screen: "Home" });
+        // navigation.push("Home");
+        saveUser(res);
+        addUser(res);
         setPassword(""), setUsername("");
       });
     (error) => {
@@ -44,12 +54,14 @@ function Login({ navigation }) {
     };
   };
 
-  //  async saveUser(user) {
-  //   try {
-  //     this.setState({ token: user.access_token, loading: false });
-  //     storeLocalStorage("user", user);
-  //   } catch (e) {}
-  // }
+  const saveUser = async (user) => {
+    try {
+      storeLocalStorage("user", user);
+      console.log("User data saved successfully!");
+    } catch (e) {
+      console.log("Error saving user data:", error);
+    }
+  };
 
   const handleLogin = () => {
     // Check if email is valid
@@ -132,5 +144,22 @@ function Login({ navigation }) {
     </SafeAreaView>
   );
 }
+const mapStateToProps = (state) => {
+  const { appState } = state;
+  return {
+    appState,
+    isPortrait: appState.isPortrait,
+    deviceDimension: appState.deviceDimension,
+    width: appState.deviceDimension.width,
+  };
+};
 
-export default Login;
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      addUser,
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
