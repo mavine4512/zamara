@@ -43,7 +43,7 @@ function Login() {
       .then((res) => res.json())
       .then((res) => {
         console.log("res", res);
-        navigation.navigate("DrawerScreen", { screen: "Home" });
+        navigation.navigate("Home", { screen: "Home" });
         // navigation.push("Home");
         saveUser(res);
         addUser(res);

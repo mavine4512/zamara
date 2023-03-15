@@ -1,13 +1,26 @@
 import React, { useContext } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { AuthContext } from "../../components/context";
-import { primary } from "../../utilities/color";
 import { moderateScale } from "react-native-size-matters";
+import { primary, black, white } from "../../utilities/color";
 function Logout(navigation) {
   const { logout } = useContext(AuthContext);
 
   return (
     <View>
+      <Text
+        style={{
+          fontFamily: "Roboto-Medium",
+          marginTop: moderateScale(10),
+          fontSize: moderateScale(14),
+          marginHorizontal: moderateScale(20),
+          fontWeight: "bold",
+          color: black,
+          marginBottom: moderateScale(10),
+        }}
+      >
+        if you logout you will you will lose you data
+      </Text>
       <TouchableOpacity
         onPress={() => logout()}
         style={{
@@ -17,7 +30,7 @@ function Logout(navigation) {
           backgroundColor: "red",
           height: moderateScale(30),
           marginHorizontal: moderateScale(20),
-          marginVertical: moderateScale(150),
+          marginVertical: moderateScale(50),
         }}
       >
         <Text
