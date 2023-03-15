@@ -14,6 +14,8 @@ import { Provider } from "react-redux";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { createStore } from "redux";
+import AddStaff from "./screen/Staff/addStaff";
+import EditStaff from "./screen/Staff/editStaff";
 
 const store = createStore(reducer);
 
@@ -29,7 +31,23 @@ function AuthStackScreen() {
     </AuthStack.Navigator>
   );
 }
-
+const Stack = createStackNavigator();
+function StackScreen() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="AddStaff"
+        options={{ headerShown: false }}
+        component={AddStaff}
+      />
+      <Stack.Screen
+        name="EditStaff"
+        options={{ headerShown: false }}
+        component={EditStaff}
+      />
+    </Stack.Navigator>
+  );
+}
 const Drawer = createDrawerNavigator();
 function DrawerScreen() {
   return (
@@ -41,6 +59,16 @@ function DrawerScreen() {
       <Drawer.Screen name="ZAMARA APP" component={Home} />
       <Drawer.Screen name="Staff" component={Staff} />
       <Drawer.Screen name="Continents" component={Continents} />
+      <Drawer.Screen
+        name="AddStaff"
+        options={{ headerShown: false }}
+        component={AddStaff}
+      />
+      <Drawer.Screen
+        name="EditStaff"
+        options={{ headerShown: false }}
+        component={EditStaff}
+      />
       <Drawer.Screen name="Logout" component={Logout} />
     </Drawer.Navigator>
   );
@@ -51,11 +79,18 @@ const RootStack = createStackNavigator();
 const RootStackScreen = ({ userToken }) => (
   <RootStack.Navigator>
     {userToken ? (
-      <RootStack.Screen
-        name="DrawerScreen"
-        component={DrawerScreen}
-        options={{ headerShown: false }}
-      />
+      <>
+        <RootStack.Screen
+          name="DrawerScreen"
+          component={DrawerScreen}
+          options={{ headerShown: false }}
+        />
+        {/* <RootStack.Screen
+          name="Screen"
+          component={StackScreen}
+          options={{ headerShown: false }}
+        /> */}
+      </>
     ) : (
       <RootStack.Screen
         name="AuthStackScreen"

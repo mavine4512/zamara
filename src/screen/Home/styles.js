@@ -14,7 +14,7 @@ export default {
   },
   gretNames: {
     fontFamily: "Roboto-Medium",
-    fontSize: moderateScale(14),
+    fontSize: moderateScale(16),
     fontWeight: "500",
     // color: Grey,
   },
